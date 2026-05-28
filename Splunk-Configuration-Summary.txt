@@ -1,0 +1,21 @@
+Splunk Enterprise Configuration Summary
+
+Configured Features:
+- Syslog collection using UDP port 514
+- Firewall log collection
+- VPN event monitoring
+- Authentication event monitoring
+- Attack detection monitoring
+- Search and event analysis
+
+Log Sources:
+- FortiGate FW-A
+- FortiGate FW-B
+- Flask application server
+
+Monitored Events:
+- VPN events
+- SSH brute force attacks
+- Port scanning activity
+- Firewall sessions
+- Authentication attempts
