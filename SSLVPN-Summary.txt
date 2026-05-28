@@ -1,0 +1,25 @@
+SSL VPN Configuration Summary
+
+VPN Type:
+- SSL VPN
+
+VPN Software:
+- FortiClient
+
+Listening Interface:
+- WAN1
+
+Port:
+- TCP 10443
+
+Features:
+- Remote access connectivity
+- User authentication
+- Dynamic IP assignment
+- Internal resource access
+- DMZ access
+
+Testing:
+- Browser portal access
+- FortiClient connectivity
+- Remote access verification

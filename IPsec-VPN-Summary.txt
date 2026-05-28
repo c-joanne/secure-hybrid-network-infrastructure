@@ -1,0 +1,22 @@
+IPsec Site-to-Site VPN Summary
+
+VPN Type:
+- IPsec Site-to-Site VPN
+
+Encryption:
+- IKEv2
+
+Connected Networks:
+- Site A: 192.168.1.0/24
+- Site B: 192.168.2.0/24
+
+VPN Features:
+- Encrypted communication
+- Cross-site routing
+- Firewall policy enforcement
+- Tunnel verification testing
+
+Testing:
+- ICMP ping testing
+- Tunnel monitoring
+- Cross-site connectivity verification
