@@ -1,0 +1,15 @@
+Attack Simulation Summary
+
+Attack simulations were performed using Kali Linux tools to test enterprise security visibility and centralized monitoring functionality.
+
+Simulated Attacks:
+- Nmap port scanning
+- Hydra SSH brute force attack
+
+Generated Events:
+- Failed authentication attempts
+- Port scan activity
+- Firewall session logs
+- VPN monitoring events
+
+All attack-related logs were successfully forwarded to Splunk Enterprise for centralized monitoring and analysis.

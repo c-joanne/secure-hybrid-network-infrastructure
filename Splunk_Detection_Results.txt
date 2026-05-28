@@ -1,0 +1,11 @@
+Splunk Detection Results
+
+Splunk Enterprise successfully detected and indexed:
+- Failed SSH login attempts
+- Port scanning activity
+- VPN events
+- Firewall sessions
+- Authentication attempts
+- DMZ access activity
+
+Splunk search queries and monitoring tools were used to analyze attack activity and enterprise network events.
