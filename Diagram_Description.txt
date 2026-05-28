@@ -1,0 +1,18 @@
+Enterprise Network Diagram Description
+
+The enterprise network infrastructure consists of two enterprise locations:
+- Site A (Headquarters)
+- Site B (Branch Office)
+
+Both sites are protected using FortiGate 60E firewalls and connected through an encrypted IPsec Site-to-Site VPN tunnel.
+
+The infrastructure includes:
+- Internal LAN networks
+- DMZ network segmentation
+- SSL VPN remote access
+- Splunk Enterprise centralized logging
+- Flask application server
+- Apache/XAMPP web server
+- Kali Linux attack simulation environment
+
+The topology demonstrates enterprise segmentation, centralized monitoring, secure communication, and cybersecurity attack detection.
