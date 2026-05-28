@@ -1,0 +1,12 @@
+Technologies Used
+
+- FortiGate 60E Firewalls
+- FortiClient SSL VPN
+- Splunk Enterprise SIEM
+- Kali Linux
+- Apache/XAMPP
+- Flask Python Application Server
+- IPsec VPN
+- Syslog (UDP 514)
+- Nmap
+- Hydra

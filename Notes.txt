@@ -1,0 +1,236 @@
+Connect Cables
+Two PCs, Two Firewalls
+
+PC1 to Firewall-A
+PC2 to Firewall-B
+
+Firewall-A WAN2 to Firewall-B WAN2
+
+----------------------------------------
+
+On both pcs:
+ncpa.cpl, change ipv4 to
+192.168.1.100
+255.255.255.0
+192.168.1.99
+
+Log in with
+Username: user
+Password: Abc@1234
+
+-----------------------------------------------------------------------------------------------
+
+FW-A and B
+Policy & Objects > Firewall Policy > Create New
+	Name: LAN-to-WAN
+	Incoming Interface: internal
+	Outgoing Interface: WAN1
+	Source: ALL
+	Destination: ALL
+	Schedule: always
+	Service: ALL
+	Action: ACCEPT
+	NAT: ENABLE
+
+PC-A and B
+ping 192.168.64.18(subject to change: WAN1)
+
+Screenshot1: Network > Interfaces 
+Screenshot all interfaces on Both firewalls.
+
+-----------------------------------------------------------------------------------------------
+
+FW-A and B but Reverse
+VPN > IPsec Wizard
+	Name: HQ-to-Branch
+	Template Type: Site-to-Site
+	Remote IP Address: 172.16.10.2
+	Outgoing Interface: WAN2
+	Pre-shared key: Abc@1234
+	NEXT
+	Local Interface: internal
+	Remote Subnets: 192.168.2.0/24
+
+Screenshot 2: VPN > IPsec Tunnels
+Screenshot Status (UP / Green) on Both firewalls.
+
+-----------------------------------------------------------------------------------------------
+
+Screenshot 3: Successful Cross-Site Pings (CMD)
+PC-A
+cmd: 
+ping 192.168.2.100
+
+PC-B
+cmd:
+ping 192.168.1.100
+
+Why? These prove routing, VPN, and connectivity.
+
+-----------------------------------------------------------------------------------------------
+
+PC-A
+http://localhost:8000
+Settings > Data Inputs > UDP > Add New 
+	Port: 514
+	Source Type: syslog
+	App Context: Search & Reporting
+	Index: Default
+
+FW-A and B
+Log & Report > Log Settings
+	Remote Logging and Archiving: ENABLE Send logs to Syslog
+	IP: 192.168.1.100
+Log out and Log in (A and B)
+
+FW-B
+CLI 
+	config log syslogd setting
+	set source-ip 192.168.2.99
+	end
+log out log in, ping, whatever and check for logs again
+
+
+Screenshot 4: Splunk > Search & Reporting > source="udp:514"
+Screenshot the Site A logs and Site B logs. 
+Why? This proves centralized logging.
+
+-----------------------------------------------------------------
+
+Screenshot 5: FortiGate Syslog Configuration
+Log & Report > Log Settings
+Screenshot "192.168.1.100" as the syslog server on both firewalls.
+
+-----------------------------------------------------------------------------------------------
+
+Screenshot 6:
+
+PC-A VMWare
+IP Addressing to put it in the DMZ
+10.10.10.10/24 10.10.10.1
+
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
+
+Setting Up SSL VPN for Remote Clients
+
+FW-A
+User & Authentication 
+> User Definition > Create New >
+	Local User > User: User1, Password: Abc@1234 > Save
+
+CLI Console 
+> Configure:
+config system settings
+set gui-sslvpn enable
+end
+> Refresh page
+VPN > SSL-VPN Settings > Create New
+	> Connection Settings: 
+		Listen on Interfaces: WAN1
+		Listen on Port: 10443
+	> Tunnel Mode Client Settings:
+		Specify > Create > + Address > Name: SSLVPN_POOL, Type: IP Range, IP Range: 192.168.20.10-192.168.20.50 > OK 
+		> Select the pool we just made
+
+VPN > SSL-VPN Portals > Create New
+	> Name: full-access > Tunnel Mode: Enabled > Web Mode: Off > IP Pools: SSLVPN_Pool > OK
+
+VPN > SSL-VPN Settings > Refresh Page
+	> Authentication/Portal Mapping: Edit "All Other Users/Groups" > Portal: full-access > OK 
+		> Create New
+			> Users/Groups: User1, Portal: full-access > OK > APPLY
+
+			--------------------------------------------
+
+Firewall Policy for SSL VPN
+Policy & Objects > Create New
+	Name: SSLVPN-to-LAN, Incoming Interface: ssl.root, Outgoing Interface: internal, Source: all and User1, Destination+Service: all, Action: Accept, NAT: Disabled
+		> SSL-VPN Settings > Server Certificate: Fortinet_Factory > Apply
+	Back to SSLVPN-to-LAN > Apply
+	
+			--------------------------------------------
+
+FortiClient Testing
+On another PC/device, install FortiClient VPN
+Create connection > 
+	VPN Type: SSL-VPN, Remote Gateway: 192.168.64.X.10443, Username: User1, Password: Abc@1234 > CONNECT
+
+	Expected Result: Client should receive an address in the range of 192.168.20.10-192.168.20.50
+	Then test:
+	ping 192.168.1.99 or ping 192.168.1.100
+	If those work, the SSL VPN is successful. 
+
+Notes:
+On Client PC, disable Panel-A
+
+
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
+
+
+on PC-D install XAMPP
+open XAMPP control panel and start apache, it should turn green
+on PC-D browser
+http://localhost
+should see XAMPP/Apache page
+
+http://10.10.10.10 should also work
+
+and then on FW-A
+create new policy
+incoming internal, outgoing dmz, action accept, nat off
+
+from PC-A
+http://10.10.10.10
+if page loads, DMZ web server reachable through FortiGate
+then test from PC-B/Kali
+from attacker, nmap 10.10.10.10
+should now see that 80/tcp open, apache deteched through IPsec vpn, fortigate, real dmz segmentation
+
+
+PC-D cmd
+pip install flask
+
+notepad > new file > paste:
+from flask import Flask
+
+from flask import Flask, request
+import logging
+
+app = Flask(__name__)
+
+logging.basicConfig(
+    filename='app.log',
+    level=logging.INFO,
+    format='%(asctime)s %(levelname)s %(message)s'
+)
+
+@app.route('/')
+def home():
+    app.logger.info(f"Homepage accessed from {request.remote_addr}")
+    return "Site A App Server Running"
+
+app.run(host='0.0.0.0', port=5000)
+
+then save it as: app.py, save type: all files, not .txt
+
+in CMD, navigate to where you saved it then run
+python app.py
+
+then on PC-D 
+http://127.0.0.1:5000
+should see
+Site A App Server Running
+then test through DMZ
+http://10.10.10.10:5000
+if it works then App Server is operational in Site A DMZ
+
+
+
+
+	
+
+SSh- APACHE2

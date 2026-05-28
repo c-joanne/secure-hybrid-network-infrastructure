@@ -1,0 +1,30 @@
+Implementation Notes
+
+The project was implemented using a simulated enterprise network topology consisting of two sites connected through an IPsec Site-to-Site VPN tunnel. FortiGate firewalls were deployed at both Site A (Headquarters) and Site B (Branch Office) to provide routing, firewall protection, VPN services, and traffic segmentation.
+
+Site A contained the primary management network, Splunk SIEM server, SSL VPN gateway, and an internal application server hosted within a DMZ network. Site B contained a secondary LAN environment and a separate DMZ network used for attack simulation testing.
+
+The following technologies and services were implemented during the project:
+
+- FortiGate 60E Firewalls
+- Site-to-Site IPsec VPN
+- SSL VPN Remote Access
+- DMZ Network Segmentation
+- Splunk Enterprise SIEM
+- Syslog Log Forwarding
+- Hydra SSH Brute Force Simulation
+- Nmap Network Scanning
+
+The IPsec VPN tunnel was configured between both firewalls using IKEv2 and static routing. Successful communication between internal networks across both sites was verified using ICMP ping testing.
+
+SSL VPN remote access was configured on the headquarters firewall to allow remote users to securely connect to internal resources using FortiClient. Authentication logs and VPN tunnel events were successfully forwarded to Splunk Enterprise.
+
+DMZ segmentation was implemented to isolate publicly accessible services from internal LAN networks. Separate firewall policies were created to control traffic between WAN, LAN, DMZ, VPN, and management networks.
+
+Splunk Enterprise was deployed within the headquarters management network and configured to receive syslog data over UDP port 514. Firewall logs from both FortiGate devices were successfully collected and indexed.
+
+Cybersecurity attack simulations were conducted from a Kali Linux attacker machine located within the Site B DMZ environment. Hydra was used to simulate SSH brute-force attacks while Nmap was used for network reconnaissance and port scanning activities.
+
+Attack traffic and failed authentication attempts were successfully detected by the FortiGate firewalls and forwarded to Splunk Enterprise for centralized monitoring and analysis.
+
+The project demonstrates secure enterprise network design principles including segmentation, secure remote access, centralized logging, VPN communication, and attack detection capabilities.

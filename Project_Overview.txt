@@ -1,0 +1,11 @@
+Project Overview
+
+This project demonstrates the implementation of a secure hybrid enterprise network infrastructure using FortiGate firewalls, VPN technologies, DMZ segmentation, Splunk SIEM logging, and cybersecurity attack simulation tools.
+
+The infrastructure includes:
+- Site-to-Site VPN
+- SSL VPN remote access
+- Splunk Enterprise monitoring
+- DMZ-hosted services
+- Firewall policy enforcement
+- Attack simulation and detection
