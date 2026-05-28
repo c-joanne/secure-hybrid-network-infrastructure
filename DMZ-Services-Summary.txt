@@ -1,0 +1,15 @@
+DMZ Services Summary
+
+Site A DMZ:
+- Flask Python Application Server
+- IP Address: 10.10.10.10
+
+Site B DMZ:
+- Apache/XAMPP Web Server
+- Attack simulation target services
+
+Security Features:
+- Firewall segmentation
+- Controlled internal access
+- VPN access policies
+- Centralized monitoring through Splunk
