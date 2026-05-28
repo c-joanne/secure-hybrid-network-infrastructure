@@ -1,0 +1,26 @@
+FW-A Configuration Summary
+
+Device:
+- FortiGate 60E
+
+Configured Features:
+- WAN1 Internet Connectivity
+- WAN2 VPN Connectivity
+- Internal LAN Interface
+- DMZ Interface
+- Site-to-Site VPN
+- SSL VPN
+- Syslog Forwarding
+- Static Routing
+- NAT Configuration
+- Firewall Policies
+
+Networks:
+- 192.168.1.0/24
+- 10.10.10.0/24
+- 172.16.10.1/24
+
+Logging:
+- Syslog forwarding to Splunk Enterprise
+- VPN event monitoring
+- Firewall session logging
